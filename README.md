@@ -88,6 +88,16 @@ docker compose run --rm playwright
 
 See [.github/workflows/playwright-e2e.yml](.github/workflows/playwright-e2e.yml).
 
+## Test targets
+
+| Target | Role |
+|--------|------|
+| `fixtures/static-site/index.html` | Primary fixture; golden image baseline |
+| `fixtures/static-site/variant.html` | Second fixture; distinct layout for a second baseline |
+| Screenshot comparison test | Asserts the primary fixture does **not** match the variant golden image |
+
+Pages are served from the repo via Playwright `webServer` (no external sites). Google/Cresta were removed because their homepages change frequently and break snapshot tests.
+
 ## Layout
 
 ```
@@ -95,6 +105,7 @@ docker-compose.yml
 scripts/docker-playwright.sh
 scripts/npm-install.sh
 playwright.config.ts
-golden_images/     # Expected screenshots (*.png)
-tests/             # Spec files (*.spec.ts)
+fixtures/static-site/   # Deterministic HTML for local tests
+golden_images/          # Expected screenshots (*.png)
+tests/                  # Spec files (*.spec.ts)
 ```

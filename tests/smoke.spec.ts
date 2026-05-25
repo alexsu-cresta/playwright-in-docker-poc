@@ -3,47 +3,30 @@ import { test, expect, type Page } from '@playwright/test';
 import { screenshotTestsEnabled } from '../src/utils/screenshot-tests';
 
 /** Golden image filenames (stored under golden_images/). */
-const GOOGLE_HOMEPAGE_SNAPSHOT = 'google-homepage.png';
-const CRESTA_HOMEPAGE_SNAPSHOT = 'cresta-homepage.png';
+const LOCAL_FIXTURE_SNAPSHOT = 'local-fixture-page.png';
+const LOCAL_VARIANT_SNAPSHOT = 'local-variant-page.png';
 
-async function dismissCookieConsentIfPresent(page: Page): Promise<void> {
-  const acceptPatterns = [/accept all/i, /accept cookies/i, /allow all/i, /got it/i];
-  for (const pattern of acceptPatterns) {
-    const button = page.getByRole('button', { name: pattern });
-    if (
-      await button
-        .first()
-        .isVisible()
-        .catch(() => false)
-    ) {
-      await button.first().click();
-      return;
-    }
-  }
+async function openLocalFixturePage(page: Page): Promise<void> {
+  await page.goto('/');
+  await expect(page).toHaveTitle(/Playwright POC Fixture/i);
+  await expect(page.getByRole('heading', { name: /Playwright in Docker POC/i })).toBeVisible();
+  await expect(page.getByTestId('fixture-card')).toBeVisible();
 }
 
-async function openGoogleHomepage(page: Page): Promise<void> {
-  await page.goto('https://www.google.com/?hl=en', { waitUntil: 'networkidle' });
-  await dismissCookieConsentIfPresent(page);
-  await expect(page).toHaveTitle(/Google/i);
-  await expect(page.locator('[name="q"]').first()).toBeVisible();
-}
-
-async function openCrestaHomepage(page: Page): Promise<void> {
-  await page.goto('https://www.cresta.com/', { waitUntil: 'networkidle' });
-  await dismissCookieConsentIfPresent(page);
-  await expect(page).toHaveTitle(/Cresta/i);
-  await expect(page.getByRole('link', { name: /get a demo|request live demo|book live demo/i }).first()).toBeVisible();
-  await expect(page.getByRole('heading', { name: /AI agents|customer experience/i }).first()).toBeVisible();
+async function openLocalVariantPage(page: Page): Promise<void> {
+  await page.goto('/variant.html');
+  await expect(page).toHaveTitle(/Playwright POC Variant/i);
+  await expect(page.getByRole('heading', { name: /Comparison target page/i })).toBeVisible();
+  await expect(page.getByTestId('variant-card')).toBeVisible();
 }
 
 test.describe('smoke', () => {
-  test('loads Google homepage', async ({ page }) => {
-    await openGoogleHomepage(page);
+  test('loads local fixture page', async ({ page }) => {
+    await openLocalFixturePage(page);
   });
 
-  test('loads Cresta homepage', async ({ page }) => {
-    await openCrestaHomepage(page);
+  test('loads local variant page', async ({ page }) => {
+    await openLocalVariantPage(page);
   });
 
   test.describe('screenshots', () => {
@@ -52,21 +35,34 @@ test.describe('smoke', () => {
       'Golden image comparison is disabled locally. Use npm run test:docker or SCREENSHOT_TESTS=true.',
     );
 
-    test('matches Google homepage golden image', async ({ page }) => {
-      await openGoogleHomepage(page);
+    // Variant golden must exist before the cross-page comparison test runs.
+    test.describe.configure({ mode: 'serial' });
 
-      await expect(page).toHaveScreenshot(GOOGLE_HOMEPAGE_SNAPSHOT, {
+    test('matches local fixture golden image', async ({ page }) => {
+      await openLocalFixturePage(page);
+
+      await expect(page).toHaveScreenshot(LOCAL_FIXTURE_SNAPSHOT, {
         animations: 'disabled',
-        fullPage: false,
+        fullPage: true,
       });
     });
 
-    test('matches Cresta homepage golden image', async ({ page }) => {
-      await openCrestaHomepage(page);
+    test('matches local variant golden image', async ({ page }) => {
+      await openLocalVariantPage(page);
 
-      await expect(page).toHaveScreenshot(CRESTA_HOMEPAGE_SNAPSHOT, {
+      await expect(page).toHaveScreenshot(LOCAL_VARIANT_SNAPSHOT, {
         animations: 'disabled',
         fullPage: true,
+      });
+    });
+
+    test('comparison: fixture page does not match variant golden image', async ({ page }) => {
+      await openLocalFixturePage(page);
+
+      await expect(page).not.toHaveScreenshot(LOCAL_VARIANT_SNAPSHOT, {
+        animations: 'disabled',
+        fullPage: true,
+        maxDiffPixelRatio: 0.01,
       });
     });
   });

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Playwright POC Variant</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #422006;
+        color: #fff7ed;
+      }
+      header {
+        padding: 2rem;
+        background: #7c2d12;
+        border-bottom: 4px solid #fb923c;
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+      }
+      main {
+        padding: 2rem;
+        max-width: 40rem;
+      }
+      .card {
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        border-radius: 8px;
+        background: #9a3412;
+        border: 2px solid #fb923c;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        background: #fb923c;
+        color: #422006;
+        font-weight: 700;
+        font-size: 0.875rem;
+      }
+      footer {
+        padding: 1rem 2rem;
+        font-size: 0.875rem;
+        color: #fed7aa;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p class="badge">VARIANT FIXTURE</p>
+      <h1>Comparison target page</h1>
+      <p>Second deterministic page for cross-page screenshot comparison tests.</p>
+    </header>
+    <main>
+      <section class="card" data-testid="variant-card">
+        <h2>Variant content</h2>
+        <p>Version: 1.0.0 — visually distinct from index.html for comparison tests.</p>
+      </section>
+    </main>
+    <footer>Rendered at build time from fixtures/static-site/variant.html</footer>
+  </body>
+</html>

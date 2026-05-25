@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Playwright POC Fixture</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        background: #1e3a5f;
+        color: #f8fafc;
+      }
+      header {
+        padding: 2rem;
+        background: #0f172a;
+        border-bottom: 4px solid #38bdf8;
+      }
+      h1 {
+        margin: 0 0 0.5rem;
+        font-size: 2rem;
+      }
+      main {
+        padding: 2rem;
+        max-width: 40rem;
+      }
+      .card {
+        margin-top: 1.5rem;
+        padding: 1.25rem;
+        border-radius: 8px;
+        background: #334155;
+        border: 2px solid #38bdf8;
+      }
+      .badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 999px;
+        background: #38bdf8;
+        color: #0f172a;
+        font-weight: 700;
+        font-size: 0.875rem;
+      }
+      footer {
+        padding: 1rem 2rem;
+        font-size: 0.875rem;
+        color: #94a3b8;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p class="badge">LOCAL FIXTURE</p>
+      <h1>Playwright in Docker POC</h1>
+      <p>Deterministic page served from this repository for stable golden images.</p>
+    </header>
+    <main>
+      <section class="card" data-testid="fixture-card">
+        <h2>Fixture content</h2>
+        <p>Version: 1.0.0 — layout and colors are fixed; do not change without updating golden images.</p>
+      </section>
+    </main>
+    <footer>Rendered at build time from fixtures/static-site/</footer>
+  </body>
+</html>
