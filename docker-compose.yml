@@ -1,0 +1,35 @@
+# Run Playwright tests in the official Microsoft image (repo root mount).
+services:
+  playwright:
+    image: mcr.microsoft.com/playwright:v1.60.0
+    init: true
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - ./golden_images:/workspace/golden_images
+      - /workspace/node_modules
+    environment:
+      CI: 'true'
+      SCREENSHOT_TESTS: 'true'
+    command: >
+      bash -lc "
+        ./scripts/npm-install.sh &&
+        npm run test:ci
+      "
+
+  playwright-update-snapshots:
+    image: mcr.microsoft.com/playwright:v1.60.0
+    init: true
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+      - ./golden_images:/workspace/golden_images
+      - /workspace/node_modules
+    environment:
+      CI: 'true'
+      SCREENSHOT_TESTS: 'true'
+    command: >
+      bash -lc "
+        ./scripts/npm-install.sh &&
+        npx playwright test --update-snapshots
+      "

@@ -1,0 +1,26 @@
+{
+  "name": "playwright-in-docker-poc",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Playwright E2E tests in Docker (POC)",
+  "scripts": {
+    "test": "SCREENSHOT_TESTS=false playwright test",
+    "test:ci": "playwright test",
+    "test:headed": "SCREENSHOT_TESTS=false HEADFUL_MODE=true playwright test",
+    "test:ui": "SCREENSHOT_TESTS=false playwright test --ui",
+    "test:debug": "SCREENSHOT_TESTS=false playwright test --debug",
+    "test:docker": "bash scripts/docker-playwright.sh test",
+    "test:docker:update-snapshots": "bash scripts/docker-playwright.sh update-snapshots",
+    "install:browsers": "playwright install chromium"
+  },
+  "dependencies": {
+    "@playwright/test": "1.60.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "typescript": "^5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
