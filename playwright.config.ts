@@ -24,7 +24,8 @@ export default defineConfig({
   expect: {
     timeout: 15_000,
     toHaveScreenshot: {
-      maxDiffPixelRatio: process.env.CI ? 0.02 : 0.01,
+      // Local fixtures are deterministic; keep tolerance at 0 so small copy changes fail.
+      maxDiffPixelRatio: 0,
     },
   },
   use: {

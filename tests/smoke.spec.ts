@@ -62,7 +62,7 @@ test.describe('smoke', () => {
       await expect(page).not.toHaveScreenshot(LOCAL_VARIANT_SNAPSHOT, {
         animations: 'disabled',
         fullPage: true,
-        maxDiffPixelRatio: 0.01,
+        maxDiffPixelRatio: 0,
       });
     });
   });
